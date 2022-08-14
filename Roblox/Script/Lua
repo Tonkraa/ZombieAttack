@@ -1,0 +1,297 @@
+wait(1)
+-- Zombies Attacks
+
+-- Script 
+local library = loadstring(game:HttpGet("https://pastebin.com/raw/eKwyeQa0", true))()
+
+local tab1 = library:CreateTab("Zombie attack", true)
+
+local toggle = library:MakeToggle(tab1,"Kill aura",false,function(toggle)
+   _G.HeadSize = 30
+local enemies = workspace.enemies
+while wait() do
+  for _,v in next, enemies:GetChildren() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+       v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+     v.HumanoidRootPart.Material = "Neon"
+       v.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+       v.HumanoidRootPart.Transparency = 0.7
+       v.HumanoidRootPart.CanCollide = false
+end)
+end
+  end
+end
+end)
+
+local toggle = library:MakeToggle(tab1,"Big aura",false,function(toggle)
+   _G.HeadSize = 40
+local enemies = workspace.enemies
+while wait() do
+  for _,v in next, enemies:GetChildren() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+       v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+     v.HumanoidRootPart.Material = "Neon"
+       v.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+       v.HumanoidRootPart.Transparency = 0.7
+       v.HumanoidRootPart.CanCollide = false
+end)
+end
+  end
+end
+end)
+
+local toggle = library:MakeToggle(tab1,"Huge aura",false,function(toggle)
+   _G.HeadSize = 50
+local enemies = workspace.enemies
+while wait() do
+  for _,v in next, enemies:GetChildren() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+       v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+     v.HumanoidRootPart.Material = "Neon"
+       v.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+       v.HumanoidRootPart.Transparency = 0.7
+       v.HumanoidRootPart.CanCollide = false
+end)
+end
+  end
+end
+end)
+
+local toggle = library:MakeToggle(tab1,"Boss aura",false,function(toggle)
+   _G.HeadSize = 40
+local enemies = workspace.BossFolder
+while wait() do
+  for _,v in next, enemies:GetChildren() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+       v.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+     v.HumanoidRootPart.Material = "Neon"
+       v.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+       v.HumanoidRootPart.Transparency = 0.7
+       v.HumanoidRootPart.CanCollide = false
+end)
+end
+  end
+end
+end)
+
+local toggle = library:MakeToggle(tab1,"Auto farm",false,function(toggle)
+   -- Auto farm
+local groundDistance = 8
+local Player = game:GetService("Players").LocalPlayer
+local function getNearest()
+local nearest, dist = nil, 99999
+for _,v in pairs(game.Workspace.BossFolder:GetChildren()) do
+if(v:FindFirstChild("Head")~=nil)then
+local m =(Player.Character.Head.Position-v.Head.Position).magnitude
+if(m<dist)then
+dist = m
+nearest = v
+end
+end
+end
+for _,v in pairs(game.Workspace.enemies:GetChildren()) do
+if(v:FindFirstChild("Head")~=nil)then
+local m =(Player.Character.Head.Position-v.Head.Position).magnitude
+if(m<dist)then
+dist = m
+nearest = v
+end
+end
+end
+return nearest
+end
+_G.farm2 = true
+Player.Chatted:Connect(function(m)
+if(m==";autofarm false")then
+_G.farm2 = false
+elseif(m==";autofarm true")then
+_G.farm2 = true
+end
+end)
+_G.globalTarget = nil
+game:GetService("RunService").RenderStepped:Connect(function()
+if(_G.farm2==true)then
+local target = getNearest()
+if(target~=nil)then
+game:GetService("Workspace").CurrentCamera.CFrame = CFrame.new(game:GetService("Workspace").CurrentCamera.CFrame.p, target.Head.Position)
+Player.Character.HumanoidRootPart.CFrame = (target.HumanoidRootPart.CFrame * CFrame.new(0, groundDistance, 9))
+_G.globalTarget = target
+end
+end
+end)
+spawn(function()
+while wait() do
+game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+game.Players.LocalPlayer.Character.Torso.Velocity = Vector3.new(0,0,0)
+end
+end)
+while wait() do
+if(_G.farm2==true and _G.globalTarget~=nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool"))then
+local target = _G.globalTarget
+game.ReplicatedStorage.Gun:FireServer({["Normal"] = Vector3.new(0, 0, 0), ["Direction"] = target.Head.Position, ["Name"] = Player.Character:FindFirstChildOfClass("Tool").Name, ["Hit"] = target.Head, ["Origin"] = target.Head.Position, ["Pos"] = target.Head.Position,})
+wait()
+end
+end
+end)
+
+wait(2)
+
+-- Tab2
+local tab2 = library:CreateTab("Misc", true)
+local button = library:MakeButton(tab2,"Heal",function(button)
+   game.Players.LocalPlayer.Character.Humanoid.Health = 100
+end)
+
+local button = library:MakeButton(tab2,"Speed",function(button)
+   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 40
+end)
+
+local button = library:MakeButton(tab2,"Fast speed",function(button)
+   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 80
+end)
+
+local button = library:MakeButton(tab2,"Fps booster",function(button)
+   local Players = game:GetService("Players")
+local BadInstances = {"DataModelMesh", "FaceInstance", "ParticleEmitter", "Trail", "Smoke", "Fire", "Sparkles", "PostEffect", "Explosion", "Clothing", "BasePart"}
+local CanBeEnabled = {"ParticleEmitter", "Trail", "Smoke", "Fire", "Sparkles", "PostEffect"}
+local function PartOfCharacter(Instance)
+    for i, v in pairs(Players:GetPlayers()) do
+        if v.Character and Instance:IsDescendantOf(v.Character) then
+            return true
+        end
+    end
+    return false
+end
+local function ReturnDescendants()
+    local Descendants = {}
+    WaitNumber = 5000
+    if _G.Settings.Players["Ignore Others"] then
+        for i, v in pairs(game:GetDescendants()) do
+            if not v:IsDescendantOf(Players) and not PartOfCharacter(v) then
+                for i2, v2 in pairs(BadInstances) do
+                    if v:IsA(v2) then
+                        table.insert(Descendants, v)
+                    end
+                end
+            end
+            if i == WaitNumber then
+                task.wait()
+                WaitNumber = WaitNumber + 5000
+            end
+        end
+    elseif _G.Settings.Players["Ignore Me"] then
+        for i, v in pairs(game:GetDescendants()) do
+            if not v:IsDescendantOf(Players) and not v:IsDescendantOf(ME.Character) then
+                for i2, v2 in pairs(BadInstances) do
+                    if v:IsA(v2) then
+                        table.insert(Descendants, v)
+                    end
+                end
+            end
+            if i == WaitNumber then
+                task.wait()
+                WaitNumber = WaitNumber + 5000
+            end
+        end
+    end
+    return Descendants
+end
+local function CheckIfBad(Instance)
+    if not Instance:IsDescendantOf(Players) and not PartOfCharacter(Instance) then
+        if Instance:IsA("DataModelMesh") then
+            if _G.Settings.Meshes.LowDetail then
+                sethiddenproperty(Instance, "LODX", Enum.LevelOfDetailSetting.Low)
+                sethiddenproperty(Instance, "LODY", Enum.LevelOfDetailSetting.Low)
+            elseif _G.Settings.Meshes.Destroy then
+                Instance:Destroy()
+            end
+        elseif Instance:IsA("FaceInstance") then
+            if _G.Settings.Images.Invisible then
+                Instance.Transparency = 1
+            elseif _G.Settings.Images.LowDetail then
+                Instance.Shiny = 1
+            elseif _G.Settings.Images.Destroy then
+                Instance:Destroy()
+            end
+        elseif table.find(CanBeEnabled, Instance.ClassName) then
+            if _G.Settings["No Particles"] or (_G.Settings.Other and _G.Settings.Other["No Particles"]) then
+                Instance.Enabled = false
+            end
+        elseif Instance:IsA("Explosion") then
+            if _G.Settings["No Explosions"] or (_G.Settings.Other and _G.Settings.Other["No Explosions"]) then
+                Instance.Visible = false
+            end
+        elseif Instance:IsA("Clothing") then
+            if _G.Settings["No Clothes"] or (_G.Settings.Other and _G.Settings.Other["No Clothes"]) then
+                Instance:Destroy()
+            end
+        elseif Instance:IsA("BasePart") then
+            if _G.Settings["Low Quality Parts"] or (_G.Settings.Other and _G.Settings.Other["Low Quality Parts"]) then
+                Instance.Material = Enum.Material.Plastic
+                Instance.Reflectance = 0
+            end
+        end
+    end
+end
+if _G.Settings["Low Water Graphics"] or (_G.Settings.Other and _G.Settings.Other["Low Water Graphics"]) then
+    workspace:FindFirstChildOfClass("Terrain").WaterWaveSize = 0
+    workspace:FindFirstChildOfClass("Terrain").WaterWaveSpeed = 0
+    workspace:FindFirstChildOfClass("Terrain").WaterReflectance = 0
+    workspace:FindFirstChildOfClass("Terrain").WaterTransparency = 0
+end
+if _G.Settings["No Shadows"] or (_G.Settings.Other and _G.Settings.Other["No Shadows"]) then
+    game:GetService("Lighting").GlobalShadows = false
+    game:GetService("Lighting").FogEnd = 9e9
+end
+if _G.Settings["Low Rendering"] or (_G.Settings.Other and _G.Settings.Other["Low Rendering"]) then
+    settings().Rendering.QualityLevel = 1
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Krahub | FpsBoosters",
+    Text = "Loading FPS Booster...",
+    Duration = math.huge,
+    Button1 = "Okay"
+})
+local Descendants = ReturnDescendants()
+local WaitNumber = 500
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "",
+    Text = "Checking " .. #Descendants .. " Instances...",
+    Duration = 5,
+    Button1 = "Okay"
+})
+for i, v in pairs(Descendants) do
+    CheckIfBad(v)
+    print("Loaded " .. i .. "/" .. #Descendants)
+    if i == WaitNumber then
+        task.wait()
+        WaitNumber = WaitNumber + 500
+    end
+end
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "",
+    Text = "FPS Booster Loaded!",
+    Duration = math.huge,
+    Button1 = "Okay"
+})
+game.DescendantAdded:Connect(CheckIfBad)
+end)
+
+local button = library:MakeButton(tab2,"Credit",function(button)
+   game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Krahub",
+    Text = "tonkra/kra",
+    Duration = math.huge,
+    Button1 = "Okay"
+})
+end)
+
+local toggle = library:MakeToggle(tab2,"Auto heal",false,function(toggle)
+   game.Players.LocalPlayer.Character.Humanoid.Health = 100
+end)
+
+-- Enjoy script 
